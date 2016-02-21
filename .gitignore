@@ -1,6 +1,8 @@
 # Ignore Python files
 **/*.pyc
 *.egg-info/
+.coverage
+dist/
 
 # Ignore IDE files
 .idea/

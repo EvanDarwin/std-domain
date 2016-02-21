@@ -9,6 +9,7 @@ dependencies = [
     # Testing dependencies
     'nose',
     'coverage',
+    'coveralls'
 ]
 
 setup(
