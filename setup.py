@@ -1,6 +1,11 @@
 import os
 from setuptools import setup
 
+import sys
+
+if sys.version_info[0] != 3 or sys.version_info[1] < 3:
+    sys.exit('At least Python 3.3 is required for std-domain')
+
 dependencies = [
     # Basic dependencies
     'tldextract',
