@@ -1,5 +1,7 @@
 # std-domain
 
+[![Coverage Status](https://coveralls.io/repos/github/EvanDarwin/std-domain/badge.svg?branch=master)](https://coveralls.io/github/EvanDarwin/std-domain?branch=master)[![Build Status](https://travis-ci.org/EvanDarwin/std-domain.svg?branch=master)](https://travis-ci.org/EvanDarwin/std-domain)
+
 **std-domain** is a Python library that intends to provide a simple interface for dealing with International Domain Names (IDN).
  
 It is a simple library that depends on other libraries to provide an interface for handling UTF-8 and standard domain names, and converting between the two.
