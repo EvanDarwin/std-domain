@@ -10,7 +10,7 @@ python:
 install: pip install -e .
 
 script:
-  - nosetests --with-coverage
+  - nosetests --cover-erase --cover-package=stddomain --with-coverage
 
 after_success:
   - coveralls
