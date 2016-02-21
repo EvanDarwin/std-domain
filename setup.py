@@ -25,7 +25,7 @@ setup(
     description=("A library for standarized Domain objects"),
     license="proprietary",
     keywords="international domain library",
-    url="https://git.relta.net/Bulldozer/std-domain",
+    url="https://github.com/EvanDarwin/std-domain",
     install_requires=dependencies,
     classifiers=[
         "License :: Other/Proprietary License",
