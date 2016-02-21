@@ -21,16 +21,18 @@ or install it in your application's dependency list.
 ## Usage
 
 ```python
+from stddomain import Domain
+
 domain = Domain(u'名がドメイン.com')
 
 print(domain)
-> xn--v8jxj3d1dzdz08w.com
+> "xn--v8jxj3d1dzdz08w.com"
 
 print(domain.domain)
-> xn--v8jxj3d1dzdz08w.com
+> "xn--v8jxj3d1dzdz08w.com"
 
 print(domain.idn)
-> 名がドメイン.com
+> "名がドメイン.com"
 
 print(domain.is_idn)
 > True
