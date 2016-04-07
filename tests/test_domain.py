@@ -9,33 +9,54 @@ class TestDomain(TestCase):
     def test_domain_ascii(self):
         domain = Domain('example.com')
 
-        assert domain.domain == 'example.com'
-        assert domain.idn == 'example.com'
-        assert domain.is_idn == False
+        self.assertEqual(domain.domain, 'example.com')
+        self.assertEqual(domain.idn, 'example.com')
+
+        self.assertEqual(domain.get_tld(), 'com')
+        self.assertEqual(domain.get_tld(True), 'com')
+        self.assertEqual(domain.get_domain(), 'example')
+        self.assertEqual(domain.get_domain(True), 'example')
+
+        self.assertFalse(domain.is_idn)
 
     def test_domain_idn(self):
-        domain = Domain(u'名がドメイン.com')
+        domain = Domain(u'名がドメイン.中国')
 
-        assert domain.domain == 'xn--v8jxj3d1dzdz08w.com'
-        assert domain.idn == u'名がドメイン.com'
-        assert domain.is_idn == True
-        assert domain.__str__() == 'xn--v8jxj3d1dzdz08w.com'
-        assert repr(domain) == 'xn--v8jxj3d1dzdz08w.com'
+        self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
+
+        self.assertEqual(domain.idn, '名がドメイン.中国')
+        self.assertTrue(domain.is_idn)
+
+        self.assertEqual(domain.get_tld(), 'xn--fiqs8s')
+        self.assertEqual(domain.get_tld(True), '中国')
+        self.assertEqual(domain.get_domain(), 'xn--v8jxj3d1dzdz08w')
+        self.assertEqual(domain.get_domain(True), '名がドメイン')
+
+        self.assertEqual(domain.__str__(), 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
+        self.assertEqual(repr(domain), 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
 
     def test_domain_punycode(self):
         domain = Domain(u'xn--v8jxj3d1dzdz08w.com')
 
-        assert domain.domain == 'xn--v8jxj3d1dzdz08w.com'
-        assert domain.idn == u'名がドメイン.com'
-        assert domain.is_idn == True
-        assert domain.__str__() == 'xn--v8jxj3d1dzdz08w.com'
-        assert repr(domain) == 'xn--v8jxj3d1dzdz08w.com'
+        self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.com')
+        self.assertEqual(domain.idn, '名がドメイン.com')
+        self.assertTrue(domain.is_idn)
+
+        self.assertEqual(domain.get_tld(), 'com')
+        self.assertEqual(domain.get_tld(True), u'com')
+        self.assertEqual(domain.get_domain(), 'xn--v8jxj3d1dzdz08w')
+        self.assertEqual(domain.get_domain(True), u'名がドメイン')
+
+        self.assertEqual(domain.__str__(), 'xn--v8jxj3d1dzdz08w.com')
+        self.assertEqual(repr(domain), 'xn--v8jxj3d1dzdz08w.com')
 
     def test_domain_bytes(self):
-        domain = Domain(bytes('example.com', 'utf8'))
+        domain_name = 'example.com'
+        domain = Domain(bytes(domain_name, 'utf8'))
 
-        assert domain.domain == 'example.com'
-        assert domain.idn == 'example.com'
-        assert domain.is_idn == False
-        assert domain.__str__() == 'example.com'
-        assert repr(domain) == 'example.com'
+        self.assertEqual(domain.domain, domain_name)
+        self.assertEqual(domain.idn, domain_name)
+        self.assertFalse(domain.is_idn)
+
+        self.assertEqual(domain.__str__(), domain_name)
+        self.assertEqual(repr(domain), domain_name)

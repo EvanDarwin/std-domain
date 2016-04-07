@@ -19,13 +19,14 @@ dependencies = [
 
 setup(
     name="std-domain",
-    version="0.0.2",
+    version="0.0.3",
     author="Evan Darwin",
     author_email="evan@relta.net",
     description=("A library for standarized Domain objects"),
     license="proprietary",
     keywords="international domain library",
     url="https://github.com/EvanDarwin/std-domain",
+    py_modules=['stddomain'],
     install_requires=dependencies,
     classifiers=[
         "License :: Other/Proprietary License",

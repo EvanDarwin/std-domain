@@ -63,7 +63,7 @@ class Domain(object):
 
         :return: The domain in punycode format
         """
-        return '.'.join([self.__domain_obj.domain, self.__domain_obj.suffix])
+        return '.'.join([self.get_domain(), self.get_tld()])
 
     @property
     def idn(self):
@@ -79,7 +79,10 @@ class Domain(object):
         if not self.__is_idn:
             return self.domain
 
-        return '.'.join([self.__idn_obj.domain, self.__idn_obj.suffix])
+        print(self.get_tld(True))
+        print(self.get_domain(True))
+
+        return '.'.join([self.get_domain(True), self.get_tld(True)])
 
     @property
     def is_idn(self):
@@ -102,7 +105,10 @@ class Domain(object):
         :param idn: Defaults to **False**. Determines if it should return
                     the extension in its native language as Unicode.
         """
-        return self.__idn_obj.domain if idn is True else self.__domain_obj.domain
+        if idn and self.is_idn:
+            return self.__idn_obj.domain
+
+        return self.__domain_obj.domain
 
     def get_tld(self, idn=False):
         """
@@ -113,7 +119,15 @@ class Domain(object):
         :param idn: Defaults to **False**. Determines if it should return
                     the extension in its native language as Unicode.
         """
-        return self.__idn_obj.suffix if idn is True else self.__domain_obj.suffix
+        if idn and self.is_idn:
+            # NOTE: The idna library doesn't handle TLD IDNs correctly,
+            # so we're going to do them outselves.
+            suffix = self.__idn_obj.suffix
+            tld_punycode = suffix.encode('idna').decode('idna')
+
+            return tld_punycode
+
+        return self.__domain_obj.suffix
 
     def __str__(self):
         """

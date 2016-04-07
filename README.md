@@ -23,16 +23,18 @@ or install it in your application's dependency list.
 ```python
 from stddomain import Domain
 
-domain = Domain(u'名がドメイン.com')
+# Full SLD and TLD IDN support
+domain = Domain(u'名がドメイン.中国')
 
 print(domain)
-> "xn--v8jxj3d1dzdz08w.com"
+> "xn--v8jxj3d1dzdz08w.xn--fiqs8s"
 
+# Printing the domain defaults to punycode
 print(domain.domain)
-> "xn--v8jxj3d1dzdz08w.com"
+> "xn--v8jxj3d1dzdz08w.xn--fiqs8s"
 
 print(domain.idn)
-> "名がドメイン.com"
+> "名がドメイン.中国"
 
 print(domain.is_idn)
 > True
