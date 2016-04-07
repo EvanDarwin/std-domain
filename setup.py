@@ -1,5 +1,4 @@
-import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 import sys
 
@@ -17,16 +16,18 @@ dependencies = [
     'coveralls'
 ]
 
+excluded_packages = ['build', 'dist']
+
 setup(
     name="std-domain",
-    version="0.0.3",
+    version="0.0.4",
     author="Evan Darwin",
     author_email="evan@relta.net",
     description=("A library for standarized Domain objects"),
     license="proprietary",
     keywords="international domain library",
     url="https://github.com/EvanDarwin/std-domain",
-    py_modules=['stddomain'],
+    packages=find_packages(exclude=excluded_packages),
     install_requires=dependencies,
     classifiers=[
         "License :: Other/Proprietary License",

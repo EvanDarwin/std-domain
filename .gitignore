@@ -2,6 +2,7 @@
 **/*.pyc
 *.egg-info/
 .coverage
+build/
 dist/
 
 # Ignore IDE files
