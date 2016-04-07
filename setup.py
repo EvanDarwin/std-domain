@@ -19,7 +19,7 @@ dependencies = [
 
 setup(
     name="std-domain",
-    version="0.0.1",
+    version="0.0.2",
     author="Evan Darwin",
     author_email="evan@relta.net",
     description=("A library for standarized Domain objects"),
@@ -31,7 +31,6 @@ setup(
         "License :: Other/Proprietary License",
         "Natural Language :: English",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3 :: Only",
         "Topic :: Software Development :: Internationalization",
         "Topic :: Software Development :: Libraries",
     ],

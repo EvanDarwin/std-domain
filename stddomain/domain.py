@@ -90,6 +90,31 @@ class Domain(object):
         """
         return self.__is_idn
 
+    def get_domain(self, idn=False):
+        """
+        This function returns the SLD (secondary level domain), or
+        the unique identifier in a domain name.
+
+        Example:
+            [something].[com]
+            ^ SLD       ^ TLD
+
+        :param idn: Defaults to **False**. Determines if it should return
+                    the extension in its native language as Unicode.
+        """
+        return self.__idn_obj.domain if idn is True else self.__domain_obj.domain
+
+    def get_tld(self, idn=False):
+        """
+        This function returns the top level domains, or the extension,
+        of the domain name. If you pass idn=True, then it will return
+        the Unicode representation.
+
+        :param idn: Defaults to **False**. Determines if it should return
+                    the extension in its native language as Unicode.
+        """
+        return self.__idn_obj.suffix if idn is True else self.__domain_obj.suffix
+
     def __str__(self):
         """
         This function should always return the punycode
