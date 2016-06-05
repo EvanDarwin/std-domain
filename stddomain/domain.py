@@ -21,18 +21,23 @@ class Domain(object):
         """
 
         is_idn = False
-        domain = None
-        idn = None
 
         # Let's make sure that it's in a str representation
         if type(domain_name) == bytes:
             domain_name = domain_name.decode('utf-8')
 
-        # If it begins with 'xn--' then it's an IDN
-        if domain_name.startswith('xn--'):
-            is_idn = True
-            domain = domain_name
-            idn = idna.decode(domain_name)
+        # Bug fix: Let's check both parts of the domain individually,
+        # so if it's /really/ weird and a mix of IDN and punycode,
+        # we still correct it.
+        domain_parts = domain_name.split('.')
+
+        for i in range(len(domain_parts)):
+            if 'xn-' in domain_parts[i]:
+                is_idn = True
+                domain_parts[i] = idna.decode(domain_parts[i])
+
+        domain = domain_name
+        idn = idna.decode(domain)
 
         # If it can't be converted to ASCII, it's an IDN
         try:
@@ -78,9 +83,6 @@ class Domain(object):
 
         if not self.__is_idn:
             return self.domain
-
-        print(self.get_tld(True))
-        print(self.get_domain(True))
 
         return '.'.join([self.get_domain(True), self.get_tld(True)])
 

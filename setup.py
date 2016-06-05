@@ -20,7 +20,7 @@ excluded_packages = ['build', 'dist']
 
 setup(
     name="std-domain",
-    version="0.0.4",
+    version="0.0.5",
     author="Evan Darwin",
     author_email="evan@relta.net",
     description=("A library for standarized Domain objects"),
