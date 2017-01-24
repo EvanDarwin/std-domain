@@ -4,6 +4,8 @@ from . import TestCase
 
 from stddomain import InternationalDomain
 
+import sys
+
 
 class TestDomain(TestCase):
     def test_domain_ascii(self):
@@ -41,7 +43,7 @@ class TestDomain(TestCase):
 
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
-
+    
         self.assertEqual(domain.idn, u'名がドメイン.中国')
         self.assertTrue(domain.is_idn)
 
@@ -70,8 +72,12 @@ class TestDomain(TestCase):
 
     def test_domain_bytes(self):
         domain_name = 'example.com'
-        domain = InternationalDomain(bytes(domain_name, 'utf8'))
-
+        
+        if sys.version_info >= (3, 0):
+            domain = InternationalDomain(bytes(domain_name, 'utf8'))
+        else:
+            domain = InternationalDomain(bytes(domain_name))
+            
         self.assertEqual(domain.domain, domain_name)
         self.assertEqual(domain.idn, domain_name)
         self.assertFalse(domain.is_idn)
