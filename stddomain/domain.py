@@ -2,14 +2,18 @@ import idna
 import tldextract
 
 
-class Domain(object):
+class InternationalDomain(object):
     """
-    Standardized Domain object, with full support for IDNs
-    and punycodes.
+    This class provides a standardized object for handling International Domain
+    Names (IDNs), as well as transforming it into punycode. We handle unicode
+    characters in both the subdomain, domain, and TLD.
     """
 
     def __init__(self, domain_name):
         """
+        This function receives a domain name, in either Unicode or punycode
+        format, and transforms it into a 
+        
         This function creates and parses the domain name
         provided by the application.
 
@@ -22,37 +26,36 @@ class Domain(object):
 
         is_idn = False
 
-        # Let's make sure that it's in a str representation
+        # Proper handling for Py2/3, convert from bytes into Unicode
         if type(domain_name) == bytes:
             domain_name = domain_name.decode('utf-8')
 
-        # Bug fix: Let's check both parts of the domain individually,
-        # so if it's /really/ weird and a mix of IDN and punycode,
-        # we still correct it.
+        # Parse the second level domain (SLD) and TLD individually
         domain_parts = domain_name.split('.')
 
-        for i in range(len(domain_parts)):
-            if 'xn-' in domain_parts[i]:
+        for i, domain_part in enumerate(domain_parts):
+            if 'xn-' in domain_part:
                 is_idn = True
-                domain_parts[i] = idna.decode(domain_parts[i])
+                domain_parts[i] = idna.decode(domain_part)
 
         domain = domain_name
         idn = idna.decode(domain)
 
-        # If it can't be converted to ASCII, it's an IDN
+        # Python throws an error if there are characters outside the ASCII
+        # charset, if it does, then we know it's Unicode 
         try:
             domain_name.encode('ascii')
         except UnicodeEncodeError:
             is_idn = True
-            domain = idna.encode(domain_name).decode('utf-8')
+            
+            domain = idna.encode(domain_name)
+            domain = domain.decode('utf-8')
+            
             idn = domain_name
 
-        if domain is None:
-            domain = domain_name
-
-        self.__domain_obj = tldextract.extract(domain)
-        self.__is_idn = is_idn
-        self.__idn_obj = tldextract.extract(idn) if is_idn else None
+        self._domain = tldextract.extract(domain)
+        self._is_idn = is_idn
+        self._idn = tldextract.extract(idn) if is_idn else None
 
     @property
     def domain(self):
@@ -81,7 +84,7 @@ class Domain(object):
         :return: The domain in its natural language
         """
 
-        if not self.__is_idn:
+        if not self._is_idn:
             return self.domain
 
         return '.'.join([self.get_domain(True), self.get_tld(True)])
@@ -93,7 +96,7 @@ class Domain(object):
 
         :return: Domain is an IDN
         """
-        return self.__is_idn
+        return self._is_idn
 
     def get_domain(self, idn=False):
         """
@@ -108,9 +111,9 @@ class Domain(object):
                     the extension in its native language as Unicode.
         """
         if idn and self.is_idn:
-            return self.__idn_obj.domain
+            return self._idn.domain
 
-        return self.__domain_obj.domain
+        return self._domain.domain
 
     def get_tld(self, idn=False):
         """
@@ -124,12 +127,12 @@ class Domain(object):
         if idn and self.is_idn:
             # NOTE: The idna library doesn't handle TLD IDNs correctly,
             # so we're going to do them outselves.
-            suffix = self.__idn_obj.suffix
+            suffix = self._idn.suffix
             tld_punycode = suffix.encode('idna').decode('idna')
 
             return tld_punycode
 
-        return self.__domain_obj.suffix
+        return self._domain.suffix
 
     def __str__(self):
         """
@@ -150,3 +153,11 @@ class Domain(object):
         :return: The string representation of this domain
         """
         return self.__str__()
+
+class Domain(InternationalDomain):
+    """
+    Provided for compatibility purposes. 
+    Will be removed in version 1.0.0
+    """
+    
+    pass

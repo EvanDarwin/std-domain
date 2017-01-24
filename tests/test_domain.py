@@ -2,12 +2,12 @@
 
 from . import TestCase
 
-from stddomain import Domain
+from stddomain import InternationalDomain
 
 
 class TestDomain(TestCase):
     def test_domain_ascii(self):
-        domain = Domain('example.com')
+        domain = InternationalDomain('example.com')
 
         self.assertEqual(domain.domain, 'example.com')
         self.assertEqual(domain.idn, 'example.com')
@@ -20,7 +20,7 @@ class TestDomain(TestCase):
         self.assertFalse(domain.is_idn)
 
     def test_domain_idn(self):
-        domain = Domain(u'名がドメイン.中国')
+        domain = InternationalDomain(u'名がドメイン.中国')
 
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
@@ -37,7 +37,7 @@ class TestDomain(TestCase):
         self.assertEqual(repr(domain), 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
 
     def test_domain_idn_mixed_content(self):
-        domain = Domain(u'名がドメイン.xn--fiqs8s')
+        domain = InternationalDomain(u'名がドメイン.xn--fiqs8s')
 
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
@@ -54,7 +54,7 @@ class TestDomain(TestCase):
         self.assertEqual(repr(domain), 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
 
     def test_domain_punycode(self):
-        domain = Domain(u'xn--v8jxj3d1dzdz08w.com')
+        domain = InternationalDomain(u'xn--v8jxj3d1dzdz08w.com')
 
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.com')
         self.assertEqual(domain.idn, '名がドメイン.com')
@@ -70,7 +70,7 @@ class TestDomain(TestCase):
 
     def test_domain_bytes(self):
         domain_name = 'example.com'
-        domain = Domain(bytes(domain_name, 'utf8'))
+        domain = InternationalDomain(bytes(domain_name, 'utf8'))
 
         self.assertEqual(domain.domain, domain_name)
         self.assertEqual(domain.idn, domain_name)

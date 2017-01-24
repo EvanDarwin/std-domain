@@ -1,1 +1,1 @@
-from .domain import Domain
+from .domain import InternationalDomain
