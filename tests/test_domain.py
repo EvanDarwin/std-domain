@@ -25,13 +25,13 @@ class TestDomain(TestCase):
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
 
-        self.assertEqual(domain.idn, '名がドメイン.中国')
+        self.assertEqual(domain.idn, u'名がドメイン.中国')
         self.assertTrue(domain.is_idn)
 
         self.assertEqual(domain.get_tld(), 'xn--fiqs8s')
-        self.assertEqual(domain.get_tld(True), '中国')
-        self.assertEqual(domain.get_domain(), 'xn--v8jxj3d1dzdz08w')
-        self.assertEqual(domain.get_domain(True), '名がドメイン')
+        self.assertEqual(domain.get_tld(True), u'中国')
+        self.assertEqual(domain.get_domain(), u'xn--v8jxj3d1dzdz08w')
+        self.assertEqual(domain.get_domain(True), u'名がドメイン')
 
         self.assertEqual(domain.__str__(), 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
         self.assertEqual(repr(domain), 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
@@ -42,13 +42,13 @@ class TestDomain(TestCase):
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
 
-        self.assertEqual(domain.idn, '名がドメイン.中国')
+        self.assertEqual(domain.idn, u'名がドメイン.中国')
         self.assertTrue(domain.is_idn)
 
         self.assertEqual(domain.get_tld(), 'xn--fiqs8s')
-        self.assertEqual(domain.get_tld(True), '中国')
+        self.assertEqual(domain.get_tld(True), u'中国')
         self.assertEqual(domain.get_domain(), 'xn--v8jxj3d1dzdz08w')
-        self.assertEqual(domain.get_domain(True), '名がドメイン')
+        self.assertEqual(domain.get_domain(True), u'名がドメイン')
 
         self.assertEqual(domain.__str__(), 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
         self.assertEqual(repr(domain), 'xn--v8jxj3d1dzdz08w.xn--fiqs8s')
@@ -57,7 +57,7 @@ class TestDomain(TestCase):
         domain = InternationalDomain(u'xn--v8jxj3d1dzdz08w.com')
 
         self.assertEqual(domain.domain, 'xn--v8jxj3d1dzdz08w.com')
-        self.assertEqual(domain.idn, '名がドメイン.com')
+        self.assertEqual(domain.idn, u'名がドメイン.com')
         self.assertTrue(domain.is_idn)
 
         self.assertEqual(domain.get_tld(), 'com')
